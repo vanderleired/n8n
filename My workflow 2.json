@@ -1,0 +1,104 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://aoai-farm.bosch-temp.com/api/openai/deployments/google-gemini-2-0-flash-lite/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{ \"model\": \"gemini-2.0-flash-lite\",\"messages\":[{\"role\": \"user\", \"content\": \"Qual o melhor time do Brasil de futebol ?!\"}]}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        -80
+      ],
+      "id": "72827e1a-9850-4d96-aa37-bc88271a7ff5",
+      "name": "Gemini"
+    },
+    {
+      "parameters": {
+        "url": "https://starforce2.vault.azure.net/secrets/llmkey?api-version=7.4",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        16,
+        -80
+      ],
+      "id": "2ab27feb-b18a-4bf0-b9c2-06223cc35ec2",
+      "name": "HTTP Request1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://aoai-farm.bosch-temp.com/api/openai/deployments/google-gemini-2-0-flash-lite/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{ \"model\": \"gemini-2.0-flash-lite\",\"messages\":[{\"role\": \"user\", \"content\": \"Qual o melhor time do Brasil de futebol ?!\"}]}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        256,
+        160
+      ],
+      "id": "d91b680e-8ca4-4467-8bbb-976c219b5887",
+      "name": "Gemini3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c2aa032e-a9a4-4a43-8e67-442aa0cd5eb2",
+  "meta": {
+    "instanceId": "0f8f736fb3e0a4ecf7c21159c69dcdbb6e749369983d6828280e2610856c2681"
+  },
+  "id": "5oJFI8LJQZjkZi24",
+  "tags": []
+}
