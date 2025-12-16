@@ -1,0 +1,134 @@
+{
+  "name": "Vanderlei POC",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://aoai-farm.bosch-temp.com/api/openai/deployments/google-gemini-2-0-flash-lite/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{ \"model\": \"gemini-2.0-flash-lite\",\"messages\":[{\"role\": \"user\", \"content\": \"Qual o melhor time do Brasil de futebol ?!\"}]}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        -128
+      ],
+      "id": "66d73765-d268-4120-9b66-c2c2a1989abb",
+      "name": "Gemini",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "9uq3NOH8ZPoQzYcD",
+          "name": "Header Auth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://starforce2.vault.azure.net/secrets/llmkey?api-version=7.4",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        224,
+        -128
+      ],
+      "id": "6027c187-b9c3-42cc-bd24-7b11fdab2a17",
+      "name": "HTTP Request1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "oAuth2Api": {
+          "id": "BqohgjkJfRr3ICAM",
+          "name": "Azure - OAuth token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://aoai-farm.bosch-temp.com/api/openai/deployments/google-gemini-2-0-flash-lite/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{ \"model\": \"gemini-2.0-flash-lite\",\"messages\":[{\"role\": \"user\", \"content\": \"Qual o melhor time do Brasil de futebol ?!\"}]}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        464,
+        112
+      ],
+      "id": "26c3378a-243a-4ed5-9567-684e3a93fff5",
+      "name": "Gemini3",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "4bqkPFhRJX6g9AVh",
+          "name": "LLM FARM - 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gemini": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bee9a048-2ca2-487c-aa40-fb0e22c34c35",
+  "meta": {
+    "instanceId": "0f8f736fb3e0a4ecf7c21159c69dcdbb6e749369983d6828280e2610856c2681"
+  },
+  "id": "ACZZ5rIaHekxizmv",
+  "tags": [
+    {
+      "updatedAt": "2025-12-03T13:30:45.271Z",
+      "createdAt": "2025-12-03T13:30:45.271Z",
+      "id": "OLDg8TMrduMdh3BS",
+      "name": "QA"
+    }
+  ]
+}
