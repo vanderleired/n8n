@@ -3,6 +3,8 @@ import type { User } from '@n8n/db';
 import { Service } from '@n8n/di';
 import { execSync } from 'child_process';
 import { UnexpectedError } from 'n8n-workflow';
+import process from 'process';
+
 import path from 'path';
 import type {
 	CommitResult,
@@ -134,13 +136,17 @@ export class SourceControlGitService {
 				],
 			};
 
-			this.git = simpleGit(httpsGitOptions).env('GIT_TERMINAL_PROMPT', '0');
+			// ✅ PATCH: preserve full process.env (proxy, certs, etc.)
+			this.git = simpleGit(httpsGitOptions).env({
+				...process.env,
+				GIT_TERMINAL_PROMPT: '0',
+			});
+
 		} else if (preferences.connectionType === 'ssh') {
 			const privateKeyPath = await this.sourceControlPreferencesService.getPrivateKeyPath();
 			const sshKnownHosts = path.join(sshFolder, 'known_hosts');
 
 			// Convert paths to POSIX format for SSH command (works cross-platform)
-			// Use regex to handle both Windows (\) and POSIX (/) separators regardless of current platform
 			const normalizedPrivateKeyPath = privateKeyPath.split(/[/\\]/).join('/');
 			const normalizedKnownHostsPath = sshKnownHosts.split(/[/\\]/).join('/');
 
@@ -151,9 +157,12 @@ export class SourceControlGitService {
 			// Quote paths to handle spaces and special characters
 			const sshCommand = `ssh -o UserKnownHostsFile="${escapedKnownHostsPath}" -o StrictHostKeyChecking=no -i "${escapedPrivateKeyPath}"`;
 
-			this.git = simpleGit(this.gitOptions)
-				.env('GIT_SSH_COMMAND', sshCommand)
-				.env('GIT_TERMINAL_PROMPT', '0');
+			// ✅ PATCH: preserve full process.env + SSH vars
+			this.git = simpleGit(this.gitOptions).env({
+				...process.env,
+				GIT_SSH_COMMAND: sshCommand,
+				GIT_TERMINAL_PROMPT: '0',
+			});
 		}
 	}
 
